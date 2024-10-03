@@ -3,11 +3,13 @@ import { drizzle, NodePgDatabase } from 'drizzle-orm/node-postgres';
 import { Pool } from 'pg';
 import * as schema from './schema'
 import { faker } from '@faker-js/faker';
+import { Bcrypt } from 'utils/bcrypt';
 
 const pool = new Pool({
     connectionString: process.env.DATABASE_URL
 });
 const db = drizzle(pool, { schema }) as NodePgDatabase<typeof schema>;
+const password = "asdqwe123";
 
 async function main() {
     const userIds = await Promise.all(
@@ -15,7 +17,7 @@ async function main() {
             const user = await db.insert(schema.users).values({
                 email: faker.internet.email(),
                 name: `${faker.person.firstName()} ${faker.person.lastName()}`,
-                password: "asdqwe123",
+                password: await Bcrypt.hash(password),
             }).returning();
             return user[0].id
         })

@@ -18,4 +18,8 @@ export class AuthService {
         const payload = { sub: id, ...rest }
         return await this.jwtService.signAsync(payload)
     }
+
+    async authenticated() {
+        return true
+    }
 }

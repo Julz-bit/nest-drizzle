@@ -27,7 +27,7 @@ export class AuthController {
     @UseGuards(AuthGuard)
     @Get()
     authenticated(@Request() req: FastifyRequest) {
-        console.log(req['user'])
+        console.log(req.user)
         return this.authService.authenticated()
     }
 }

@@ -1,10 +1,16 @@
-import { Body, Controller, Get, Post, Request, UseGuards } from '@nestjs/common';
-import { AuthService } from './auth.service';
-import { AuthDto } from './dto/auth.dto';
+import { Body, Controller, Get, Post, UseGuards, UseInterceptors } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { Roles } from '../common/decorators/role.decorator';
+import { Role } from '../common/enums/role.enum';
 import { AuthGuard } from './auth.guard';
-import { FastifyRequest } from 'fastify';
+import { Auth } from '../common/decorators/auth.decorator';
+import { SerializeInterceptor } from '../common/interceptors/serialize.interceptor';
+import { AuthService } from './auth.service';
+import { User } from '../common/types/model';
+import { AuthDto } from './dto/auth.dto';
 import { TestDto } from './dto/test.dto';
+
+
 
 @ApiTags('Auth Service')
 @Controller()
@@ -23,11 +29,12 @@ export class AuthController {
         return 'validation success'
     }
 
+    @Get()
     @ApiBearerAuth()
     @UseGuards(AuthGuard)
-    @Get()
-    authenticated(@Request() req: FastifyRequest) {
-        console.log(req.user)
-        return this.authService.authenticated()
+    @Roles(Role.User)
+    @UseInterceptors(new SerializeInterceptor(['iat', 'exp', 'sub']))
+    authenticated(@Auth() user: User) {
+        return user;
     }
 }

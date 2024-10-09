@@ -5,10 +5,10 @@ import {
     Injectable,
     UnauthorizedException,
 } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import { Reflector } from '@nestjs/core';
-import { JwtService } from '@nestjs/jwt';
 import { FastifyRequest } from 'fastify';
+import { Reflector } from '@nestjs/core';
+import { ConfigService } from '@nestjs/config';
+import { JwtService } from '@nestjs/jwt';
 import { Role } from '../common/enums/role.enum';
 
 @Injectable()
@@ -24,8 +24,7 @@ export class AuthGuard implements CanActivate {
             context.getHandler(),
             context.getClass(),
         ])
-
-        const request = context.switchToHttp().getRequest();
+        const request = context.switchToHttp().getRequest<FastifyRequest>();
         const token = this.extractTokenFromHeader(request);
         if (!token) {
             throw new UnauthorizedException();
@@ -41,7 +40,7 @@ export class AuthGuard implements CanActivate {
             if (requiredRoles && !requiredRoles.some(role => role === payload.role)) {
                 throw new ForbiddenException();
             }
-            request['user'] = payload;
+            request.user = payload;
         } catch {
             throw new UnauthorizedException();
         }

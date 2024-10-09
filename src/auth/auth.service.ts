@@ -14,7 +14,7 @@ export class AuthService {
     async signIn(authDto: AuthDto) {
         const user = await this.usersService.findByEmail(authDto.email)
         if (!user || !(await Bcrypt.compare(authDto.password, user.password))) throw new BadRequestException('Invalid Credentials');
-        const { id, ...rest } = user
+        const { id, createdAt, ...rest } = user
         const payload = { sub: id, ...rest }
         return await this.jwtService.signAsync(payload)
     }

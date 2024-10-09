@@ -1,11 +1,15 @@
-import { pgTable, serial, text, timestamp, jsonb, integer, primaryKey, index } from "drizzle-orm/pg-core";
+import { pgTable, serial, text, timestamp, jsonb, integer, primaryKey, index, pgEnum } from "drizzle-orm/pg-core";
 import { relations, sql } from "drizzle-orm";
+
+export const usersRoles = pgEnum('roles', ['user', 'admin']);
 
 export const users = pgTable('users', {
     id: serial('id').primaryKey(),
     name: text('name').notNull(),
     email: text('email').notNull(),
-    password: text('password').notNull()
+    password: text('password').notNull(),
+    role: usersRoles('role').default('user').notNull(),
+    createdAt: timestamp('created_at').notNull().notNull().defaultNow(),
 })
 
 export const profile = pgTable('profile', {

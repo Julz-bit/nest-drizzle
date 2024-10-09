@@ -3,7 +3,8 @@ import { AppModule } from './app.module';
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
 import { ConfigService } from '@nestjs/config';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { ValidationPipe } from '@nestjs/common';
+import { BadRequestException, ValidationPipe } from '@nestjs/common';
+import { ValidationExceptionFilter } from './common/filters/validation-exception.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
@@ -11,12 +12,16 @@ async function bootstrap() {
     new FastifyAdapter()
   );
   const configService = app.get(ConfigService);
-  app.useGlobalPipes(new ValidationPipe())
+  app.useGlobalPipes(new ValidationPipe({
+    stopAtFirstError: true,
+    exceptionFactory: (errors) => new BadRequestException(errors)
+  }))
+  app.useGlobalFilters(new ValidationExceptionFilter())
   const config = new DocumentBuilder()
-    .setTitle('Cats example')
-    .setDescription('The cats API description')
+    .setTitle('NEST DRIZZLE')
+    .setDescription('API description')
     .setVersion('1.0')
-    .addTag('cats')
+    .addTag('NESTZZLE')
     .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config)

@@ -7,7 +7,7 @@ import { AuthGuard } from './auth.guard';
 import { FastifyRequest } from 'fastify';
 
 @ApiTags('Auth Service')
-@Controller('auth')
+@Controller()
 export class AuthController {
     constructor(
         private readonly authService: AuthService

@@ -2,9 +2,9 @@ import { Body, Controller, Get, Post, Request, UseGuards } from '@nestjs/common'
 import { AuthService } from './auth.service';
 import { AuthDto } from './dto/auth.dto';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { Bcrypt } from '../common/utils/bcrypt';
 import { AuthGuard } from './auth.guard';
 import { FastifyRequest } from 'fastify';
+import { TestDto } from './dto/test.dto';
 
 @ApiTags('Auth Service')
 @Controller()
@@ -18,9 +18,9 @@ export class AuthController {
         return await this.authService.signIn(body)
     }
 
-    @Get('test')
-    async test() {
-        return await Bcrypt.hash('asdqwe13')
+    @Post('test')
+    async test(@Body() body: TestDto) {
+        return 'validation success'
     }
 
     @ApiBearerAuth()

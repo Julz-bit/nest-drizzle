@@ -2,7 +2,7 @@ import { Body, Controller, Get, Post, Request, UseGuards } from '@nestjs/common'
 import { AuthService } from './auth.service';
 import { AuthDto } from './dto/auth.dto';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { Bcrypt } from 'utils/bcrypt';
+import { Bcrypt } from '../common/utils/bcrypt';
 import { AuthGuard } from './auth.guard';
 import { FastifyRequest } from 'fastify';
 

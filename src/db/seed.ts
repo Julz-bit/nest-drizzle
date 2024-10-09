@@ -3,7 +3,7 @@ import { drizzle, NodePgDatabase } from 'drizzle-orm/node-postgres';
 import { Pool } from 'pg';
 import * as schema from './schema'
 import { faker } from '@faker-js/faker';
-import { Bcrypt } from 'utils/bcrypt';
+import { Bcrypt } from '../common/utils/bcrypt';
 
 const pool = new Pool({
     connectionString: process.env.DATABASE_URL

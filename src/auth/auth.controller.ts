@@ -10,8 +10,6 @@ import { User } from '../common/types/model';
 import { AuthDto } from './dto/auth.dto';
 import { TestDto } from './dto/test.dto';
 
-
-
 @ApiTags('Auth Service')
 @Controller()
 export class AuthController {
